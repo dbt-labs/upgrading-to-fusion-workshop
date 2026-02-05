@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: locations
+    description: Location dimension table with store location information
+    columns:
+      - name: location_id
+        description: Unique identifier for store locations
+        tests:
+          - not_null
+          - unique
+      - name: location_name
+        description: Name of the store location
+      - name: tax_rate
+        description: Tax rate for this location
+      - name: opened_date
+        description: Date when the location opened
+
+# Semantic models for advanced analytics
+# MetricFlow semantic layer features for enhanced business metrics

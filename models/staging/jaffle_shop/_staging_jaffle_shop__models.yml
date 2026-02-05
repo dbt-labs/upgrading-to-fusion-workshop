@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: stg_customers_with_source
+    description: "Staging customer data using source() function - demonstrates best practice for referencing seeds"
+    columns:
+      - name: customer_id
+        description: "Primary key for customers"
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: "Customer first name"
+      - name: last_name
+        description: "Customer last name"
+      - name: customer_name
+        description: "Full customer name (first + last)"
+        tests:
+          - not_null
+
+  - name: stg_customers
+    description: "Customer table of ID and name"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer"
+        tests:
+          - unique
+          - not_null
+      - name: customer_name
+        description: "Full name of the customer"
+        tests:
+          - not_null
+
+# Removed the problematic raw_data source entirely to eliminate errors
+
+# DEPRECATED: Global test configurations at wrong level
+# test-paths: ["tests"]  # Should be in dbt_project.yml, commented out to avoid warnings
+
+# NOTE: Removed macro references as they don't belong in model YAML files
+  - name: stg_locations
+    description: List of open locations with basic cleaning and transformation applied, one row per location.
+    columns:
+      - name: location_id
+        description: The unique key for each location.
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_order_items
+    description: Individual food and drink items that make up our orders, one row per item.
+    columns:
+      - name: order_item_id
+        description: The unique key for each order item.
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: The corresponding order each order item belongs to
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+  - name: stg_orders
+    description: Order data with basic cleaning and transformation applied, one row per order.
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "order_total - tax_paid = subtotal"
+    columns:
+      - name: order_id
+        description: The unique key for each order.
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_products
+    description: Product (food and drink items that can be ordered) data with basic cleaning and transformation applied, one row per product.
+    columns:
+      - name: product_id
+        description: The unique key for each product.
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_orders_with_custom_config
+    description: "Orders staging table with custom audit configurations"
+    columns:
+      - name: id
+        description: "Unique order identifier"
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        description: "Foreign key to customers table"
+      - name: order_date
+        description: "Date the order was placed"
+      - name: status

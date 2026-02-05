@@ -1,0 +1,130 @@
+version: 2
+
+models:
+  - name: customer_analytics_dashboard
+    description: "Customer analytics with downstream integrations"
+exposures:
+  # Exposure definitions for downstream systems
+  - name: executive_dashboard
+    label: "Executive KPI Dashboard"
+    type: dashboard
+    url: "https://company.tableau.com/executive-kpis"
+    description: "High-level business metrics for C-suite executives"
+    depends_on:
+      - ref('customer_analytics_dashboard')
+      - ref('orders')
+      - ref('customer_scd2')
+
+    owner:
+      name: "Analytics Team"
+      email: "analytics@company.com"
+
+    # Additional exposure metadata that may not be supported
+    config:
+      meta:
+        refresh_schedule: "0 6 * * *"
+        priority: "critical"
+        data_classification: "confidential"
+  - name: customer_segmentation_report
+    label: "Customer Segmentation Analysis"
+    type: analysis
+    url: "https://company.looker.com/customer-segments"
+    description: "Monthly customer segmentation report for marketing team"
+    depends_on:
+      - ref('customer_scd2')
+
+    owner:
+      name: "Marketing Analytics"
+      email: "marketing-analytics@company.com"
+
+    # DEPRECATED: Old exposure syntax patterns
+    maturity: medium  # Should be in meta
+    config:
+      tags: ["marketing", "customer_analysis"]
+  - name: financial_reporting_export
+    label: "Financial Data Export"
+    type: application
+    description: "Automated export to financial reporting system"
+    depends_on:
+      - ref('financial_reporting_with_protected')
+      - ref('order_history_iceberg')
+
+    owner:
+      name: "Finance Team"
+      email: "finance@company.com"
+
+    # Complex exposure configuration that may cause issues
+    config:
+      meta:
+        export_format: "csv"
+        encryption_required: true
+        retention_days: 2555
+        access_level: "restricted"
+        compliance:
+          - "SOX"
+          - "GDPR"
+          - "CCPA"
+  - name: ml_model_training_pipeline
+    label: "ML Model Training Data"
+    type: ml
+    description: "Data pipeline feeding machine learning model training"
+    depends_on:
+      - ref('advanced_state_selection')
+
+    owner:
+      name: "Data Science Team"
+      email: "data-science@company.com"
+
+    # ML-specific metadata
+    config:
+      meta:
+        model_type: "customer_lifetime_value"
+        training_frequency: "weekly"
+        feature_store: "feast"
+        model_registry: "mlflow"
+  - name: real_time_dashboard
+    label: "Real-time Operations Dashboard"
+    type: dashboard
+    url: "https://company.grafana.com/operations"
+    description: "Real-time operational metrics dashboard"
+    depends_on:
+      - ref('order_events_microbatch')  # Microbatch model
+      - ref('logging_dependent_model')
+
+    owner:
+      name: "Operations Team"
+      email: "operations@company.com"
+
+    # Real-time specific configuration
+    config:
+      meta:
+        refresh_interval: "5_minutes"
+        alert_thresholds:
+          error_rate: 0.05
+          latency_p95: 500
+        monitoring: "datadog"
+sources:
+  - name: external_apis
+    description: "External API integrations"
+    tables:
+      - name: customer_enrichment_api
+        description: "Customer data enrichment from external API"
+        # Exposure-like configuration on sources
+        config:
+          meta:
+            external_location: "https://api.customer-data.com/enrich"
+            depends_on:
+              - ref('customers')
+
+  - name: data_warehouse_exports
+    description: "Data warehouse export jobs"
+    tables:
+      - name: daily_customer_export
+        description: "Daily customer data export job"
+        # Complex source configuration that might cause issues
+        config:
+          meta:
+            export_schedule: "0 2 * * *"
+            destination: "s3://company-exports/customers/"
+            format: "parquet"
+            compression: "snappy"

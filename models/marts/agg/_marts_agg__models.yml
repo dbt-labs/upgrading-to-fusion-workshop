@@ -1,0 +1,18 @@
+models:
+  - name: monthly_payment_analysis_pivot_any
+    description: |
+      **INTROSPECTION ERROR MODEL** - Used for Fusion migration training
+
+      Another example of PIVOT (ANY) causing introspection failures. This pattern
+      is common when pivoting on dimensions that change over time (payment methods,
+      product categories, etc.).
+
+      **Error:** Dynamic column generation prevents Fusion from understanding
+      the model's output schema during static analysis.
+
+      **Fix Options:**
+      1. Use explicit payment method names in pivot
+      2. Refactor to use conditional aggregation instead of PIVOT
+      3. Use post-hook or meta configuration to bypass introspection
+    config:
+      tags: ['introspection_error', 'training_example']

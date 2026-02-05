@@ -1,0 +1,54 @@
+site_name: dbt Fusion Upgrade Training
+site_description: Training materials for upgrading from dbt Core to dbt Fusion
+site_url: https://dbt-labs.github.io/Coalesce-2025-Upgrading-to-Fusion/
+
+theme:
+  name: material
+  palette: 
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  features:
+    - navigation.footer
+    - navigation.instant
+    - navigation.tracking
+    - content.action.edit
+    - toc.integrate
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - toc:
+      toc_depth: 3
+      permalink: "#"
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - admonition
+
+repo_url: https://github.com/dbt-labs/Coalesce-2025-Upgrading-to-Fusion
+repo_name: dbt-labs/Coalesce-2025-Upgrading-to-Fusion
+edit_uri: edit/main/docs/
+
+nav:
+  - Home: index.md

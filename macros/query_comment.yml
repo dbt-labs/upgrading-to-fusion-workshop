@@ -1,0 +1,12 @@
+version: 2
+
+macros:
+  - name: query_comment
+    description: "Generates dynamic SQL comments with execution metadata - "
+    arguments:
+      - name: include_performance_metrics
+        description: "Whether to include performance monitoring comments"
+      - name: custom_metadata
+        description: "Additional custom metadata to include in comments"
+    docs:
+      show: true

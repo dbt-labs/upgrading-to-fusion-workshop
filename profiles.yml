@@ -1,0 +1,16 @@
+upgrading_to_fusion:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: YDA41575
+      user: training_user
+      role: transformer
+
+      password: # enter password from training slides here
+
+      database: dbt_learn
+      warehouse: transformer_coalesce
+      schema: # enter your schema here
+      threads: 4
+      client_session_keep_alive: False
