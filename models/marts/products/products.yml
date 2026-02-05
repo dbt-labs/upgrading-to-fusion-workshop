@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: products
+    description: Product dimension table with basic product information
+    columns:
+      - name: product_id
+        description: Product SKU identifier (renamed from sku)
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: Name of the product
+      - name: product_type
+        description: Type/category of product
+      - name: product_description
+        description: Product description
+      - name: product_price
+        description: Product price in USD
+
+# Semantic models for product analytics
+# MetricFlow semantic layer features for enhanced business metrics

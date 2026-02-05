@@ -1,0 +1,44 @@
+models:
+  - name: financial_reporting_protected
+    description: "Financial reporting with enhanced governance"
+
+    # Protected model access for data security
+    deprecation_date: '2024-08-01'
+    columns:
+      - name: order_id
+        description: "Order identifier"
+        data_type: varchar
+        constraints:
+          - type: not_null
+          - type: unique
+
+      - name: revenue_amount
+        description: "Revenue amount in USD"
+        data_type: decimal(15,2)
+        constraints:
+          - type: not_null
+          - type: check
+            expression: "revenue_amount >= 0"
+      - name: ordered_at
+        description: "Order date"
+        data_type: timestamp_ntz
+        constraints:
+          - type: not_null
+
+      - name: customer_id
+        description: "Customer identifier"
+        data_type: varchar
+        constraints:
+          - type: not_null
+        tests:
+          - relationships:
+              arguments:
+                to: ref('customers')
+                field: customer_id
+    config:
+      access: private
+      group: finance
+      contract:
+        enforced: true
+
+    # Model-level constraints

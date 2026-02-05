@@ -1,0 +1,10 @@
+groups:
+  - name: finance
+    owner:
+      name: "Finance Team"
+      email: "finance@company.com"
+      
+  - name: analytics  
+    owner:
+      name: "Analytics Team"
+      email: "analytics@company.com"

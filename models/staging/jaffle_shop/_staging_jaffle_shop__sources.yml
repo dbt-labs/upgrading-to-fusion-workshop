@@ -1,0 +1,99 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: "Raw data from the jaffle shop application, loaded as seeds"
+    database: RAW
+    schema: UPGRADING_TO_FUSION
+    
+    tables:
+      - name: raw_customers
+        description: "Raw customer data"
+        columns:
+          - name: id
+            description: "Primary key for customers"
+            tests:
+              - unique
+              - not_null
+          - name: first_name
+            description: "Customer first name"
+          - name: last_name
+            description: "Customer last name"
+
+      - name: raw_orders
+        description: "Raw order data"
+        columns:
+          - name: id
+            description: "Primary key for orders"
+            tests:
+              - unique
+              - not_null
+          - name: user_id
+            description: "Foreign key to customers"
+          - name: ordered_at
+            description: "Date the order was placed"
+          - name: status
+            description: "Order status"
+
+      - name: raw_products
+        description: "Raw product data"
+        columns:
+          - name: sku
+            description: "Primary key for products"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Product name"
+          - name: type
+            description: "Product category"
+          - name: price
+            description: "Product price in cents"
+          - name: description
+            description: "Product description"
+
+      - name: raw_items
+        description: "Raw order items data"
+        columns:
+          - name: id
+            description: "Primary key for order items"
+            tests:
+              - unique
+              - not_null
+          - name: order_id
+            description: "Foreign key to orders"
+            tests:
+              - not_null
+          - name: sku
+            description: "Foreign key to products"
+            tests:
+              - not_null
+
+      - name: raw_stores
+        description: "Raw store location data"
+        columns:
+          - name: id
+            description: "Primary key for stores"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Store name"
+          - name: opened_at
+            description: "Date the store opened"
+          - name: tax_rate
+            description: "Tax rate for the store location"
+
+      - name: raw_supplies
+        description: "Raw supply data"
+        columns:
+          - name: id
+            description: "Primary key for supplies (has intentional duplicates for demo purposes)"
+            tests:
+              - not_null
+          - name: name
+            description: "Supply name"
+          - name: cost
+            description: "Supply cost in cents"
+          - name: perishable
+            description: "Whether the supply is perishable"
