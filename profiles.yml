@@ -12,3 +12,14 @@ upgrading_to_fusion:
       database: snowflake_learning_db
       warehouse: compute_wh
       schema: dbt_trouze
+    fusion_dev:
+      type: snowflake
+      account: "{{ env_var('ACCOUNT') }}"
+
+      user: "{{ env_var('USER') }}"
+      password: "{{ env_var('PASSWORD') }}" # enter password you used to signup for Snowflake demo account here
+      role: ACCOUNTADMIN
+      
+      database: snowflake_learning_db
+      warehouse: compute_wh
+      schema: fusion_dev
