@@ -65,6 +65,7 @@ dbtf debug
 ```bash
 dbt clean
 dbtf deps
+dbtf init --fusion-upgrade
 dbtf parse
 ```
 
@@ -89,6 +90,9 @@ Most fixes are straightforward: correct typos, move keys to the right nesting le
 Use [dbt-autofix](https://github.com/dbt-labs/dbt-autofix) to resolve deprecations and upgrade packages to their latest Fusion-compatible versions.
 
 After autofix, `dbtf parse` should pass cleanly.
+
+## 7b. Use agents and agent skills!
+You can use the `migrating-dbt-core-to-fusion` skill from the official [dbt-agent-skills repo](https://github.com/dbt-labs/dbt-agent-skills/tree/main). Open your IDE's chat window and run `npx install agent-skill` (TODO)
 
 ## 8. Compile and fix remaining issues
 
