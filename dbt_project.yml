@@ -12,8 +12,6 @@ test-paths: ["data-tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
@@ -50,7 +48,7 @@ models:
       +materialized: view
     marts:
       +materialized: table
-      persist_docs:   # Missing + prefix (dbt Core ignores, Fusion validates)
+      +persist_docs:  # Missing + prefix (dbt Core ignores, Fusion validates)
         relation: true
         columns: true
 

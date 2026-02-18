@@ -4,7 +4,8 @@
 
 {{ config(
     materialized='view',
-    tags=['introspection_error', 'pivot_any', 'monthly_analysis']
+    tags=['introspection_error', 'pivot_any', 'monthly_analysis'],
+    static_analysis='off'
 ) }}
 
 with monthly_payment_data as (

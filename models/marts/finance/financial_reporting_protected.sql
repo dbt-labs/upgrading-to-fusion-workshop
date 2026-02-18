@@ -1,13 +1,11 @@
-{{
-  config(
-    materialized='table',
-    access='private',
-    group='finance',
-    deprecation_date='2024-08-01',
-    contract={'enforced': true},
-    description='Protected financial reporting model with enhanced governance'
-  )
-}}
+{{ config(
+    materialized="table", 
+    access="private", 
+    group="finance", 
+    contract={'enforced': true}, 
+    description="Protected financial reporting model with enhanced governance", 
+    meta={'deprecation_date': '2026-08-01'}
+) }}
 
 -- Financial reporting with advanced governance features:
 -- 1. Private access restrictions for data security

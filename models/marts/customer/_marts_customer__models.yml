@@ -1,39 +1,24 @@
 # YAML ANCHORS ISSUE: These standalone anchors work in dbt Core but BREAK in Fusion
 # Fusion requires anchors to be under the 'anchors:' key for stricter YAML validation
 
-customer_id_column: &customer_id_standard
-  name: customer_id
-  description: "Unique customer identifier"
-  data_type: varchar
-  tests:
-    - not_null
-    - unique
-
-email_column: &email_standard  
-  name: email
-  description: "Customer email address"
-  data_type: varchar(255)
-  tests:
-    - not_null
-
-tier_column: &customer_tier_standard
-  name: customer_tier
-  description: "Customer tier based on spending"
-  data_type: varchar(20)
-  tests:
-    - accepted_values:
-        values: ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
-
 models:
   - name: customers
     description: Customer overview data mart, offering key details for each unique customer. One row per customer.
     tests:
       - dbt_utils.expression_is_true:
+          arguments:
             expression: "lifetime_spend_pretax + lifetime_tax_paid = lifetime_spend"
-            condition: "count_lifetime_orders > 0"  # BREAKING: condition argument removed in 1.0.0+
+            condition: "count_lifetime_orders > 0"
     columns:
       # Using standalone anchor (BREAKS in Fusion)
-      - *customer_id_standard
+      - &customer_id_standard
+        name: customer_id
+        description: "Unique customer identifier"
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
       - name: customer_name
         description: Customers' full name.
       - name: count_lifetime_orders
@@ -52,18 +37,15 @@ models:
         description: Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.
         tests:
           - accepted_values:
+              arguments:
                 values: ["new", "returning"]
 
 # Semantic models and exposures for customer analytics
 # Advanced dbt Mesh capabilities with MetricFlow integration
   - name: customer_analytics_with_contracts
     description: "Customer analytics with enhanced data contracts"
-    
+
     # Model contracts for data quality enforcement
-    access: protected
-    contract:
-      enforced: true
-      
     constraints:
       - type: not_null
         columns: [customer_id, email]
@@ -71,25 +53,29 @@ models:
         columns: [customer_id]
       - type: check
         expression: "customer_id > 0"
-      - type: check  
+      - type: check
         expression: "lifetime_value >= 0"
       - type: foreign_key
         columns: [customer_id]
         to: ref('customers')
         to_columns: [customer_id]
-    
     columns:
       # Using standalone anchors (BREAKS in Fusion - should be under 'anchors:' key)
       - *customer_id_standard
-      - *email_standard
+      - name: email
+        description: "Customer email address"
+        data_type: varchar(255)
+        tests:
+          - not_null
+
       - name: first_name
         description: "Customer first name"
         data_type: varchar(100)
-        
-      - name: last_name  
+
+      - name: last_name
         description: "Customer last name"
         data_type: varchar(100)
-        
+
       - name: lifetime_value
         description: "Customer lifetime value in USD"
         data_type: decimal(10,2)
@@ -98,45 +84,57 @@ models:
             expression: "lifetime_value >= 0"
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1000000
-              
-      # Using standalone anchor for customer tier (BREAKS in Fusion)
-      - *customer_tier_standard
-              
+              arguments:
+                min_value: 0
+                max_value: 1000000
+      - name: customer_tier
+        description: "Customer tier based on spending"
+        data_type: varchar(20)
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
+
       - name: last_ordered_at
         description: "Date of customer's most recent order"
         data_type: timestamp_ntz
-        
+
       - name: total_orders
         description: "Total number of orders placed by customer"
         data_type: integer
         constraints:
           - type: check
             expression: "total_orders >= 0"
+    config:
+      access: protected
+      contract:
+        enforced: true
+
   - name: customer_analysis_yaml_errors
     description: |
       **YAML VALIDATION ERROR MODEL** - Used for Fusion migration training
-      
+
       This model contains several common YAML validation errors that dbt Core 
       might ignore but Fusion will catch with stricter validation:
-      
+
       1. `materialised` instead of `materialized` (British spelling)
       2. `tag` instead of `tags` (singular vs plural)  
       3. `indexes` in model config (should be in schema file)
       4. Missing `+` prefix in dbt_project.yml configurations
-      
+
       These errors demonstrate how Fusion's stricter YAML validation catches
       common configuration mistakes that previously went unnoticed.
-    materialised: table     # ERROR: British spelling, should be 'materialized
     columns:
       - name: customer_id
         description: Primary key
         tests:
           - unique
           - not_null
-      - name: value_segment  
+      - name: value_segment
         description: Customer value segmentation
         constraints:  # ERROR: This should be 'tests' for column-level constraints
           - type: check
             expression: "value_segment in ('High Value', 'Medium Value', 'Low Value')"
+    config:
+      meta:
+        materialised: table

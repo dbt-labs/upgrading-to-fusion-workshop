@@ -1,24 +1,14 @@
 models:
   - name: financial_reporting_protected
     description: "Financial reporting with enhanced governance"
-    
+
     # Protected model access for data security
-    access: private
-    group: finance
-    
-    # Deprecation warning - another type of migration consideration
-    deprecation_date: '2024-08-01'
-    
-    contract:
-      enforced: true
-      
-    # Model-level constraints
+    deprecation_date: '2026-08-01'
     constraints:
       - type: check
         expression: "revenue_amount IS NOT NULL"
       - type: check
         expression: "revenue_amount >= 0"
-        
     columns:
       - name: order_id
         description: "Order identifier"
@@ -26,7 +16,7 @@ models:
         constraints:
           - type: not_null
           - type: unique
-          
+
       - name: revenue_amount
         description: "Revenue amount in USD"
         data_type: decimal(15,2)
@@ -34,19 +24,26 @@ models:
           - type: not_null
           - type: check
             expression: "revenue_amount >= 0"
-            
       - name: ordered_at
         description: "Order date"
         data_type: timestamp_ntz
         constraints:
           - type: not_null
-          
+
       - name: customer_id
-        description: "Customer identifier"  
+        description: "Customer identifier"
         data_type: varchar
         constraints:
           - type: not_null
         tests:
-          - relationships:
-              to: ref('customers')
-              field: customer_id
+          - dbt_constraints.foreign_key:
+              arguments:
+                pk_table_name: ref('customers')
+                pk_column_name: customer_id
+    config:
+      access: private
+      group: finance
+      contract:
+        enforced: true
+
+    # Model-level constraints

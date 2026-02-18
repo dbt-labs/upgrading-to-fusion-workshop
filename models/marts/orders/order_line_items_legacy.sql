@@ -21,7 +21,7 @@ products as (
 joined as (
     select
         -- This will BREAK when upgrading dbt_utils - surrogate_key() was replaced
-        {{ dbt_utils.surrogate_key(['oi.order_id', 'oi.product_id']) }} as order_item_key,
+        {{ dbt_utils.generate_surrogate_key(['oi.order_id', 'oi.product_id']) }} as order_item_key,
         
         oi.order_id,
         oi.product_id,

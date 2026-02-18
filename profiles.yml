@@ -9,6 +9,6 @@ upgrading_to_fusion:
       password: "{{ env_var('PASSWORD') }}" # enter password you used to signup for Snowflake demo account here
       role: ACCOUNTADMIN
       
-      database: analytics
+      database: snowflake_learning_db
       warehouse: compute_wh
       schema: dbt_trouze
