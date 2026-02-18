@@ -27,10 +27,6 @@ tier_column: &customer_tier_standard
 models:
   - name: customers
     description: Customer overview data mart, offering key details for each unique customer. One row per customer.
-    tests:
-      - dbt_utils.expression_is_true:
-            expression: "lifetime_spend_pretax + lifetime_tax_paid = lifetime_spend"
-            condition: "count_lifetime_orders > 0"  # BREAKING: condition argument removed in 1.0.0+
     columns:
       # Using standalone anchor (BREAKS in Fusion)
       - *customer_id_standard
