@@ -92,7 +92,11 @@ Use [dbt-autofix](https://github.com/dbt-labs/dbt-autofix) to resolve deprecatio
 After autofix, `dbtf parse` should pass cleanly.
 
 ## 7b. Use agents and agent skills!
-You can use the `migrating-dbt-core-to-fusion` skill from the official [dbt-agent-skills repo](https://github.com/dbt-labs/dbt-agent-skills/tree/main). Open your IDE's chat window and run `npx install agent-skill` (TODO)
+You can use the `migrating-dbt-core-to-fusion` skill from the official [dbt-agent-skills repo](https://github.com/dbt-labs/dbt-agent-skills/tree/main). Open your IDE's chat window and run:
+```
+npx skills add dbt-labs/dbt-agent-skills --list
+npx skills add dbt-labs/dbt-agent-skills --skill migrating-dbt-core-to-fusion
+```
 
 ## 8. Compile and fix remaining issues
 
