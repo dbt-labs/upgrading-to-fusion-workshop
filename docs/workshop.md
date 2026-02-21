@@ -11,12 +11,6 @@ Before the workshop, make sure you have the following installed:
 
 ## 1. Clone the starter repo
 
-```bash
-git clone https://github.com/dbt-labs/upgrading-to-fusion-workshop.git
-cd upgrading-to-fusion-workshop
-git checkout -b your-initials-fusion-upgrade
-```
-
 ## 2. Set up a Snowflake demo account
 
 1. Go to [signup.snowflake.com](https://signup.snowflake.com/) (no credit card required, access for 30 days, with $400 of credit)
@@ -43,15 +37,18 @@ Open `profiles.yml` and fill in the values from your Snowflake account:
 ```bash
 uv venv --python 3.12 .venv
 source .venv/bin/activate
-uv pip install dbt-snowflake
-dbt seed --vars 'load_source_data: true'
-dbt build
+uv pip install dbt-snowflake==1.11.2
+dbt --version
+dbt deps
+dbt build --vars 'load_source_data: true'
+cp -r ./target artifacts
 ```
 
 ## 5. Install the Fusion CLI
 
 ```bash
 curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update
+dbtf system update --version 2.0.0-preview.126
 ```
 
 Verify the installation:
@@ -63,7 +60,7 @@ dbtf debug
 ## 6. Install packages and parse
 
 ```bash
-dbt clean
+dbtf clean
 dbtf deps
 dbtf init --fusion-upgrade
 dbtf parse
@@ -114,7 +111,6 @@ Once resolved, `dbtf compile` should succeed.
 Copy the compiled artifacts and run `dbt clone` to materialize into a new schema:
 
 ```bash
-cp -r ./target artifacts
 dbt clone --state ./artifacts/target --full-refresh --target fusion_dev
 ```
 
