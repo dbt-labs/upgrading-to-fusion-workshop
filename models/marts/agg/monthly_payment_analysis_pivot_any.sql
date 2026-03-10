@@ -4,6 +4,7 @@
 
 {{ config(
     materialized='view',
+    static_analysis='off',
     tags=['introspection_error', 'pivot_any', 'monthly_analysis']
 ) }}
 
