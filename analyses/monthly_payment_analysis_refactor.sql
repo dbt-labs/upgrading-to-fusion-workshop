@@ -3,8 +3,8 @@
 -- Fusion can now introspect the fixed column structure
 
 {{ config(
-    materialized='view',
-    tags=['fusion_compatible', 'pivot_explicit', 'monthly_analysis']
+    tags=['fusion_compatible', 'pivot_explicit', 'monthly_analysis'], 
+    meta={'materialized': 'view'}
 ) }}
 
 with monthly_payment_data as (

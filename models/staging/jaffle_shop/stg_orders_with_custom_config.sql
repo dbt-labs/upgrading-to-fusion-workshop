@@ -1,12 +1,7 @@
-{{
-  config(
-    materialized='table',
-    add_row_number=true,
-    add_hash_key=true,
-    business_unit='ecommerce',
-    enable_audit_fields=true
-  )
-}}
+{{ config(
+    materialized="table", 
+    meta={'add_row_number': true, 'add_hash_key': true, 'business_unit': 'ecommerce', 'enable_audit_fields': true}
+) }}
 
 {#- 
   This model uses completely custom organizational configs that Fusion doesn't support.
