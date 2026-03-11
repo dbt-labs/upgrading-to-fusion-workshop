@@ -1,11 +1,8 @@
-{{
-  config(
-    materialized='view',
-    deprecation_date='2024-06-01',
-    deprecation_reason='This model uses legacy business logic and will be replaced by new order analytics models',
-    description='Legacy order summary model scheduled for deprecation - '
-  )
-}}
+{{ config(
+    materialized="view", 
+    description='Legacy order summary model scheduled for deprecation - ', 
+    meta={'deprecation_date': '2024-06-01', 'deprecation_reason': 'This model uses legacy business logic and will be replaced by new order analytics models'}
+) }}
 
 
 -- Models with deprecation dates may not be fully supported in Fusion migration
