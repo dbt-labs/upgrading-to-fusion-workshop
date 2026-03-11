@@ -30,7 +30,7 @@ models:
         description: "Full name of the customer"
         tests:
           - not_null
-          
+
 # Removed the problematic raw_data source entirely to eliminate errors
 
 # DEPRECATED: Global test configurations at wrong level
@@ -59,14 +59,15 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_orders')
-              field: order_id
-
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
   - name: stg_orders
     description: Order data with basic cleaning and transformation applied, one row per order.
     tests:
       - dbt_utils.expression_is_true:
-          expression: "order_total - tax_paid = subtotal"
+          arguments:
+            expression: "order_total - tax_paid = subtotal"
     columns:
       - name: order_id
         description: The unique key for each order.

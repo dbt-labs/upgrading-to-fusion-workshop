@@ -5,8 +5,8 @@
   
   {%- set unique_key = config.get('unique_key') -%}
   {%- set updated_at = config.get('updated_at', 'updated_at') -%}
-  {%- set start_date = config.get('start_date', 'valid_from') -%}
-  {%- set end_date = config.get('end_date', 'valid_to') -%}
+  {%- set start_date = config.meta_get('start_date', 'valid_from') -%}
+  {%- set end_date = config.meta_get('end_date', 'valid_to') -%}
   
   -- Custom SCD Type 2 materialization for slowly changing dimensions
   -- This implements slowly changing dimension logic with versioning

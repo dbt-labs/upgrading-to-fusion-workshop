@@ -1,16 +1,13 @@
-{{
-  config(
-    materialised='table',
-    description='Model demonstrating common YAML validation errors for Fusion training',
-    post_hook="update {{ this }} set processed_at = current_timestamp()",
-    tag=['yaml_validation_error', 'fusion_training'],
-    unique_key='customer_id',
+{{ config(
+    description="Model demonstrating common YAML validation errors for Fusion training", 
+    post_hook="update {{ this }} set processed_at = current_timestamp()", 
+    unique_key="customer_id", 
     indexes=[
       {'columns': ['customer_id'], 'type': 'hash'}
-    ],
-    persist_docs={'relation': true, 'columns': true}
-  )
-}}
+    ], 
+    persist_docs={'relation': true, 'columns': true}, 
+    meta={'materialised': 'table', 'tag': ['yaml_validation_error', 'fusion_training']}
+) }}
 -- ABOVE
 -- YAML VALIDATION ERROR: Should be 'materialized' (British vs American spelling)
 -- YAML VALIDATION ERROR: Should be 'tags' (plural)

@@ -1,9 +1,7 @@
-{{
-  config(
-    materialised='table',
-    description='Critical analytics dashboard data that depends on Python-based customer segmentation'
-  )
-}}
+{{ config(
+    description='Critical analytics dashboard data that depends on Python-based customer segmentation', 
+    meta={'materialised': 'table'}
+) }}
 
 -- This model would create a critical path dependency on the Python model in production,
 -- analytics pipeline would depend on Python-based segmentation

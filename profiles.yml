@@ -3,21 +3,21 @@ upgrading_to_fusion:
   outputs:
     dev:
       type: snowflake
-      account: "{{ env_var('ACCOUNT') }}"
+      account: "BVTBGRH-VF24119"
 
-      user: "{{ env_var('USER') }}"
-      password: "{{ env_var('PASSWORD') }}" # enter password you used to signup for Snowflake demo account here
+      user: "CARLOSPERALES"
+      password: "Pascualfuncion@7" # enter password you used to signup for Snowflake demo account here
       role: ACCOUNTADMIN
       
       database: snowflake_learning_db
       warehouse: compute_wh
-      schema: dbt_trouze
+      schema: dbt_cperales
     fusion_dev:
       type: snowflake
-      account: "{{ env_var('ACCOUNT') }}"
+      account: "BVTBGRH-VF24119"
 
-      user: "{{ env_var('USER') }}"
-      password: "{{ env_var('PASSWORD') }}" # enter password you used to signup for Snowflake demo account here
+      user: "CARLOSPERALES"
+      password: "Pascualfuncion@7" # enter password you used to signup for Snowflake demo account here
       role: ACCOUNTADMIN
       
       database: snowflake_learning_db
