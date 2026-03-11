@@ -1,6 +1,6 @@
 {% materialization clone_table, default %}
   {% set target_relation = this %}
-  {% set source_relation = config.get('source_relation') %}
+  {% set source_relation = config.meta_get('source_relation') %}
   
   {%- if not source_relation -%}
     {{ exceptions.raise_compiler_error("Clone materialization requires 'source_relation' config") }}

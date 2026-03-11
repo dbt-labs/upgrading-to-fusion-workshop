@@ -13,8 +13,9 @@ models:
         description: The foreign key relating to the customer who placed the order.
         tests:
           - relationships:
-              to: ref('stg_customers')
-              field: customer_id
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
       - name: location_id
         description: The foreign key relating to the location the order was placed at.
       - name: order_total
@@ -36,7 +37,7 @@ models:
       - name: order_cost
         description: The sum of supply expenses to fulfill the order.
       - name: location_name
-        description: The full location name. 
+        description: The full location name.
       - name: is_food_order
         description: A boolean indicating if this order included any food items.
       - name: is_drink_order
@@ -60,10 +61,10 @@ models:
         description: Surrogate key for order line items
       - name: order_id
         description: Foreign key to orders
-      - name: product_id  
+      - name: product_id
         description: Foreign key to products
       - name: line_total
         description: Total amount for this line item
-        
+
   - name: daily_orders_cross_db_legacy
     description: Daily order aggregations using deprecated cross-db macros
